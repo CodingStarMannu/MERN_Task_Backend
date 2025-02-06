@@ -19,5 +19,6 @@ router.get("/getUserInfo", isAuthorize, userController.getUserInfo);
 router.get("/getProfilePic", isAuthorize, userController.getProfilePic);
 router.get("/getBio", isAuthorize, userController.getBio);
 router.get("/getAllUsersWithContent", userController.getAllUsersWithContent);
+router.get("/getUserVideos", isAuthorize, userController.getUserVideos);
 
 module.exports = router;

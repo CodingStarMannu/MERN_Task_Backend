@@ -335,6 +335,34 @@ const getAllUsersWithContent = async (req, res) => {
   }
 };
 
+const getUserVideos = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const videos = await Video.find({ user: userId }).select("title video");
+
+    if (!videos.length) {
+      return res.status(404).json({ message: "No videos found." });
+    }
+
+    res.status(200).json({
+      message: "Videos retrieved successfully",
+      videos: videos.map((video) => ({
+        _id: video._id,
+        title: video.title,
+        videoUrl: video.video,
+      })),
+    });
+  } catch (error) {
+    console.error("Error retrieving user videos:", error);
+    res.status(500).json({ error: "Server error occurred" });
+  }
+};
+
+
 module.exports = {
   createAccount,
   login,
@@ -344,6 +372,6 @@ module.exports = {
   getUserInfo,
   getProfilePic,
   getBio,
-  getAllUsersWithContent
-  
+  getAllUsersWithContent,
+  getUserVideos
 };
